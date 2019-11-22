@@ -104,16 +104,16 @@
                                     <a href="/likecomment?id_comment=${comentario.id}"><button class="like">
                                             <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                                         </button></a>
-                                    <label class="text-justify"><#if comentario.me_gusta?has_content>
-                                            ${comentario.me_gusta}
+                                    <label class="text-justify"><#if comentario.cantLikes?has_content>
+                                            ${comentario.cantLikes}
                                         <#else>
                                             0
                                         </#if></label>
                                     <a href="/dislikecomment?id_comment=${comentario.id}"><button class="dislike">
                                             <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
                                         </button></a>
-                                    <label class="text-justify"><#if comentario.dislike?has_content>
-                                            ${comentario.dislike}
+                                    <label class="text-justify"><#if comentario.cantDisLikes?has_content>
+                                            ${comentario.cantDisLikes}
                                         <#else>
                                             0
                                         </#if></label>
@@ -140,7 +140,9 @@
                 <div class="card text-white bg-primary mb-1">
                     <form action="/comentar" method="POST">
                     <div class="card-header">
-                        ${usuario.username}
+                        <#if usuario?has_content>
+                            ${usuario.username}
+                        </#if>
                     </div>
                     <div class="card-body">
                         <div class=" card-text form-group">

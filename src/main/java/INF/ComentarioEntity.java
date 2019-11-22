@@ -14,6 +14,8 @@ public class ComentarioEntity {
     public UsuarioEntity usuarioByUsuarioId;
     public ArticuloEntity articuloByArticuloId;
     public Collection<LikeComentarioEntity> likeComentariosById;
+    public long cantLikes =0;
+    public long cantDisLikes=0;
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)

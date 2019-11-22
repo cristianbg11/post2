@@ -53,6 +53,7 @@ public class Main {
         port(8080);
         staticFiles.location("/publico");
         EntityManager em = getSession();
+
         long num = 1;
 
         if (secion.find(UsuarioEntity.class, num)==null){
@@ -123,11 +124,13 @@ public class Main {
             spark.Session session=request.session(true);
             UsuarioEntity usuario = (UsuarioEntity)(session.attribute("usuario"));
             String tag = request.queryParams("id_tag");
+            /*
             if(usuario==null){
                 response.redirect("/");
             } else if (usuario.administrador==false){
                 response.redirect("/index");
             }
+            */
             List<ArticuloEntity> articulos = em.createQuery("select a from ArticuloEntity a order by id desc", ArticuloEntity.class).getResultList();
             List<String> etiquetas = em.createQuery("select distinct e.etiqueta from EtiquetaEntity e", String.class).getResultList();
             attributes.put("usuario",usuario);
@@ -169,24 +172,33 @@ public class Main {
             final Session sesion = getSession();
             spark.Session session=request.session(true);
             UsuarioEntity usuario = (UsuarioEntity)(session.attribute("usuario"));
+            /*
             if(usuario==null){
                 response.redirect("/");
             } else if (usuario.administrador==false){
                 response.redirect("/index");
             }
+             */
             long id = Integer.parseInt(request.queryParams("id_post"));
             ArticuloEntity articulo = sesion.find(ArticuloEntity.class, id);
-            /*
-            Query<LikeArticuloEntity> query = (Query<LikeArticuloEntity>) em.createQuery("from LikeArticuloEntity l where l.usuarioByIdUsuario.id=:scn and l.articuloByIdArticulo.id=:art", LikeArticuloEntity.class);
-            query.setParameter("scn", usuario.id);
-            query.setParameter("art", id);
-            */
             Query cant = (Query) em.createQuery("select count(a) from LikeArticuloEntity a where a.like=true and a.articuloByIdArticulo.id=:art");
             cant.setParameter("art", id);
             Query cant2 = (Query) em.createQuery("select count(a) from LikeArticuloEntity a where a.dislike=true and a.articuloByIdArticulo.id=:art");
             cant2.setParameter("art", id);
             long likes = (long) cant.getSingleResult();
             long dislikes = (long) cant2.getSingleResult();
+
+            Query cantLikeComment = (Query) em.createQuery("select count(a) from LikeArticuloEntity a where a.like=true and a.articuloByIdArticulo.id=:art");
+            cantLikeComment.setParameter("art", id);
+            articulo.comentariosById.forEach(comment->{
+                comment.likeComentariosById.forEach(meGusta ->{
+                    if (meGusta.like==true){
+                        comment.cantLikes++;
+                    } else if (meGusta.dislike==true){
+                        comment.cantDisLikes++;
+                    }
+                });
+            });
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("usuario", usuario);
             attributes.put("post", articulo);
@@ -335,10 +347,12 @@ public class Main {
                     em.getTransaction().commit();
                 } else if (likeUser.like==true){
                     likeUser.setLike(false);
+                    likeUser.setDislike(false);
                     em.merge(likeUser);
                     em.getTransaction().commit();
                 } else if (likeUser.like==false){
                     likeUser.setLike(true);
+                    likeUser.setDislike(false);
                     em.merge(likeUser);
                     em.getTransaction().commit();
                 }
@@ -350,89 +364,143 @@ public class Main {
         }); //le da me gusta en un articulo
 
         get("/dislikepost", (request, response) -> {
+            spark.Session session=request.session(true);
+            UsuarioEntity usuario = (UsuarioEntity)(session.attribute("usuario"));
             final Session sesion = getSession();
             long id = Integer.parseInt(request.queryParams("id_post"));
             ArticuloEntity articulo = sesion.find(ArticuloEntity.class, id);
             //dislikePost(em, request, articulo);
+            em.getTransaction().begin();
+            if(articulo.likeArticulosById==null){
+                LikeArticuloEntity like = new LikeArticuloEntity();
+                like.like = false;
+                like.dislike = true;
+                like.articuloByIdArticulo = articulo;
+                like.usuarioByIdUsuario = usuario;
+                em.persist(like);
+                em.getTransaction().commit();
+            }
+            else {
+                Query<LikeArticuloEntity> query = (Query<LikeArticuloEntity>) em.createQuery("from LikeArticuloEntity l where l.usuarioByIdUsuario.id=:scn and l.articuloByIdArticulo.id=:art", LikeArticuloEntity.class);
+                query.setParameter("scn", usuario.id);
+                query.setParameter("art", id);
+                LikeArticuloEntity likeUser = query.uniqueResult();
+                if (likeUser==null){
+                    LikeArticuloEntity like = new LikeArticuloEntity();
+                    like.like = false;
+                    like.dislike = true;
+                    like.articuloByIdArticulo = articulo;
+                    like.usuarioByIdUsuario = usuario;
+                    em.persist(like);
+                    em.getTransaction().commit();
+                } else if (likeUser.dislike==true){
+                    likeUser.setDislike(false);
+                    likeUser.setLike(false);
+                    em.merge(likeUser);
+                    em.getTransaction().commit();
+                } else if (likeUser.dislike==false){
+                    likeUser.setDislike(true);
+                    likeUser.setLike(false);
+                    em.merge(likeUser);
+                    em.getTransaction().commit();
+                }
+            }
             response.redirect("/post?id_post="+id);
             return "No me gusta";
         }); //le da no me gusta en un articulo
 
         get("/likecomment", (request, response) -> {
+            spark.Session session=request.session(true);
+            UsuarioEntity usuario = (UsuarioEntity)(session.attribute("usuario"));
             final Session sesion = getSession();
             long id = Integer.parseInt(request.queryParams("id_comment"));
             ComentarioEntity comentario = sesion.find(ComentarioEntity.class, id);
-            //likeComment(em, request, comentario);
+            em.getTransaction().begin();
+            if(comentario.likeComentariosById==null){
+                LikeComentarioEntity like = new LikeComentarioEntity();
+                like.like = true;
+                like.dislike = false;
+                like.comentarioByIdComentario = comentario;
+                like.usuarioByIdUsuario = usuario;
+                em.persist(like);
+                em.getTransaction().commit();
+            }
+            else {
+                Query<LikeComentarioEntity> query = (Query<LikeComentarioEntity>) em.createQuery("from LikeComentarioEntity l where l.usuarioByIdUsuario.id=:scn and l.comentarioByIdComentario.id=:art", LikeComentarioEntity.class);
+                query.setParameter("scn", usuario.id);
+                query.setParameter("art", id);
+                LikeComentarioEntity likeUser = query.uniqueResult();
+                if (likeUser==null){
+                    LikeComentarioEntity like = new LikeComentarioEntity();
+                    like.like = true;
+                    like.dislike = false;
+                    like.comentarioByIdComentario = comentario;
+                    like.usuarioByIdUsuario = usuario;
+                    em.persist(like);
+                    em.getTransaction().commit();
+                } else if (likeUser.like==true){
+                    likeUser.setLike(false);
+                    likeUser.setDislike(false);
+                    em.merge(likeUser);
+                    em.getTransaction().commit();
+                } else if (likeUser.like==false){
+                    likeUser.setLike(true);
+                    likeUser.setDislike(false);
+                    em.merge(likeUser);
+                    em.getTransaction().commit();
+                }
+            }
             response.redirect("/post?id_post="+comentario.articuloByArticuloId.id);
             return "Me gusta";
         }); //le da me gusta a un comentario
 
         get("/dislikecomment", (request, response) -> {
+            spark.Session session=request.session(true);
+            UsuarioEntity usuario = (UsuarioEntity)(session.attribute("usuario"));
             final Session sesion = getSession();
             long id = Integer.parseInt(request.queryParams("id_comment"));
             ComentarioEntity comentario = sesion.find(ComentarioEntity.class, id);
-            //dislikeComment(em, request, comentario);
+            em.getTransaction().begin();
+            if(comentario.likeComentariosById==null){
+                LikeComentarioEntity like = new LikeComentarioEntity();
+                like.like = false;
+                like.dislike = true;
+                like.comentarioByIdComentario = comentario;
+                like.usuarioByIdUsuario = usuario;
+                em.persist(like);
+                em.getTransaction().commit();
+            }
+            else {
+                Query<LikeComentarioEntity> query = (Query<LikeComentarioEntity>) em.createQuery("from LikeComentarioEntity l where l.usuarioByIdUsuario.id=:scn and l.comentarioByIdComentario.id=:art", LikeComentarioEntity.class);
+                query.setParameter("scn", usuario.id);
+                query.setParameter("art", id);
+                LikeComentarioEntity likeUser = query.uniqueResult();
+                if (likeUser==null){
+                    LikeComentarioEntity like = new LikeComentarioEntity();
+                    like.like = false;
+                    like.dislike = true;
+                    like.comentarioByIdComentario = comentario;
+                    like.usuarioByIdUsuario = usuario;
+                    em.persist(like);
+                    em.getTransaction().commit();
+                } else if (likeUser.dislike==true){
+                    likeUser.setDislike(false);
+                    likeUser.setLike(false);
+                    em.merge(likeUser);
+                    em.getTransaction().commit();
+                } else if (likeUser.dislike==false){
+                    likeUser.setDislike(true);
+                    likeUser.setLike(false);
+                    em.merge(likeUser);
+                    em.getTransaction().commit();
+                }
+            }
             response.redirect("/post?id_post="+comentario.articuloByArticuloId.id);
             return "No me gusta";
         }); //le da un no me gusta a un comentario
 
     }
-    /*
-    public static void likePost(EntityManager em, Request request, ArticuloEntity articulo){
-        if(articulo.me_gusta==null){
-            em.getTransaction().begin();
-            articulo.setMe_gusta(1);
-            em.merge(articulo);
-            em.getTransaction().commit();
-        } else{
-            em.getTransaction().begin();
-            articulo.setMe_gusta(articulo.me_gusta+1);
-            em.merge(articulo);
-            em.getTransaction().commit();
-        }
-    }
 
-    public static void dislikePost(EntityManager em, Request request, ArticuloEntity articulo){
-        if(articulo.dislike==null){
-            em.getTransaction().begin();
-            articulo.setDislike(1);
-            em.merge(articulo);
-            em.getTransaction().commit();
-        } else{
-            em.getTransaction().begin();
-            articulo.setDislike(articulo.dislike+1);
-            em.merge(articulo);
-            em.getTransaction().commit();
-        }
-    }
-    public static void likeComment(EntityManager em, Request request, ComentarioEntity comentario){
-        if(comentario.me_gusta==null){
-            em.getTransaction().begin();
-            comentario.setMe_gusta(1);
-            em.merge(comentario);
-            em.getTransaction().commit();
-        } else{
-            em.getTransaction().begin();
-            comentario.setMe_gusta(comentario.me_gusta+1);
-            em.merge(comentario);
-            em.getTransaction().commit();
-        }
-    }
-
-    public static void dislikeComment(EntityManager em, Request request, ComentarioEntity comentario){
-        if(comentario.dislike==null){
-            em.getTransaction().begin();
-            comentario.setDislike(1);
-            em.merge(comentario);
-            em.getTransaction().commit();
-        } else{
-            em.getTransaction().begin();
-            comentario.setDislike(comentario.dislike+1);
-            em.merge(comentario);
-            em.getTransaction().commit();
-        }
-    }
-    */
     public static void etiquetas(EntityManager em, Request request, ArticuloEntity articulo) {
         String[] tags = request.queryParams("etiqueta").split(",");
         List<String> tagList = Arrays.asList(tags);
