@@ -131,12 +131,25 @@ public class Main {
                 response.redirect("/index");
             }
             */
-            List<ArticuloEntity> articulos = em.createQuery("select a from ArticuloEntity a order by id desc", ArticuloEntity.class).getResultList();
+            //List<ArticuloEntity> articulos = em.createQuery("select a from ArticuloEntity a order by id desc", ArticuloEntity.class).getResultList();
+            Query query = (Query) em.createQuery("select a from ArticuloEntity a order by id desc");
+            Query queryTotal = (Query) em.createQuery("Select count(a.id) from ArticuloEntity a");
+            long countResult = (long)queryTotal.getSingleResult();
+            int pageSize = 5;
+            int pageNumber = 1;
+            if(request.queryParams("pag") != null){
+                pageNumber = Integer.parseInt(request.queryParams("pag"));
+            }
+            int paginas = (int) ((countResult / pageSize) + 1);
+            query.setFirstResult((pageNumber-1) * pageSize);
+            query.setMaxResults(pageSize);
+            List <ArticuloEntity> articulos = query.getResultList();
             List<String> etiquetas = em.createQuery("select distinct e.etiqueta from EtiquetaEntity e", String.class).getResultList();
             attributes.put("usuario",usuario);
             attributes.put("articulos",articulos);
             attributes.put("etiquetas",etiquetas);
             attributes.put("tag", tag);
+            attributes.put("paginas", paginas);
             return new ModelAndView(attributes, "index.ftl");
 
         } , new FreeMarkerEngine());
@@ -219,7 +232,7 @@ public class Main {
             em.merge(articulo);
             em.getTransaction().commit();
             em.getTransaction().begin();
-            Query query = (Query) em.createQuery("delete EtiquetaEntity e where e.articuloByArticuloId.id = :id");
+            Query query = (Query) em.createQuery("delete from EtiquetaEntity e where e.articuloByArticuloId.id = :id");
             query.setParameter("id", id_articulo);
             query.executeUpdate();
             em.getTransaction().commit();
@@ -333,7 +346,7 @@ public class Main {
                 em.getTransaction().commit();
             }
             else {
-                Query<LikeArticuloEntity> query = (Query<LikeArticuloEntity>) em.createQuery("from LikeArticuloEntity l where l.usuarioByIdUsuario.id=:scn and l.articuloByIdArticulo.id=:art", LikeArticuloEntity.class);
+                Query<LikeArticuloEntity> query = (Query<LikeArticuloEntity>) em.createQuery("select l from LikeArticuloEntity l where l.usuarioByIdUsuario.id=:scn and l.articuloByIdArticulo.id=:art", LikeArticuloEntity.class);
                 query.setParameter("scn", usuario.id);
                 query.setParameter("art", id);
                 LikeArticuloEntity likeUser = query.uniqueResult();
@@ -381,7 +394,7 @@ public class Main {
                 em.getTransaction().commit();
             }
             else {
-                Query<LikeArticuloEntity> query = (Query<LikeArticuloEntity>) em.createQuery("from LikeArticuloEntity l where l.usuarioByIdUsuario.id=:scn and l.articuloByIdArticulo.id=:art", LikeArticuloEntity.class);
+                Query<LikeArticuloEntity> query = (Query<LikeArticuloEntity>) em.createQuery("select l from LikeArticuloEntity l where l.usuarioByIdUsuario.id=:scn and l.articuloByIdArticulo.id=:art", LikeArticuloEntity.class);
                 query.setParameter("scn", usuario.id);
                 query.setParameter("art", id);
                 LikeArticuloEntity likeUser = query.uniqueResult();
@@ -426,7 +439,7 @@ public class Main {
                 em.getTransaction().commit();
             }
             else {
-                Query<LikeComentarioEntity> query = (Query<LikeComentarioEntity>) em.createQuery("from LikeComentarioEntity l where l.usuarioByIdUsuario.id=:scn and l.comentarioByIdComentario.id=:art", LikeComentarioEntity.class);
+                Query<LikeComentarioEntity> query = (Query<LikeComentarioEntity>) em.createQuery("select l from LikeComentarioEntity l where l.usuarioByIdUsuario.id=:scn and l.comentarioByIdComentario.id=:art", LikeComentarioEntity.class);
                 query.setParameter("scn", usuario.id);
                 query.setParameter("art", id);
                 LikeComentarioEntity likeUser = query.uniqueResult();
@@ -471,7 +484,7 @@ public class Main {
                 em.getTransaction().commit();
             }
             else {
-                Query<LikeComentarioEntity> query = (Query<LikeComentarioEntity>) em.createQuery("from LikeComentarioEntity l where l.usuarioByIdUsuario.id=:scn and l.comentarioByIdComentario.id=:art", LikeComentarioEntity.class);
+                Query<LikeComentarioEntity> query = (Query<LikeComentarioEntity>) em.createQuery("select l from LikeComentarioEntity l where l.usuarioByIdUsuario.id=:scn and l.comentarioByIdComentario.id=:art", LikeComentarioEntity.class);
                 query.setParameter("scn", usuario.id);
                 query.setParameter("art", id);
                 LikeComentarioEntity likeUser = query.uniqueResult();

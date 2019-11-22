@@ -7,5 +7,15 @@
       <jdbc-driver>org.h2.Driver</jdbc-driver>
       <jdbc-url>jdbc:h2:tcp://localhost/~/practica4</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="hibernate.cfg.xml/Hibernate" uuid="d646df10-91aa-4aed-8d9d-37f721f76c80">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate
+
+C:/Web/post2/src/main/resources/hibernate.cfg.xml</remarks>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:tcp://localhost/~/practica4</jdbc-url>
+    </data-source>
   </component>
 </project>

@@ -97,8 +97,13 @@
                 </#if>
             </div>
         </div>
-        <div class="holder">
-        </div>
+        <nav>
+            <ul class="pagination">
+                <#list 1..paginas as i>
+                    <li class="page-item"><a class="page-link" href="/index?pag=${i}">${i}</a></li>
+                </#list>
+            </ul>
+        </nav>
     </div>
 </div>
 
@@ -112,18 +117,5 @@
 <script src="assets/js/smoothproducts.min.js"></script>
 <script src="assets/js/theme.js"></script>
 <script src="js/jPages.js"></script>
-<script>
-    $(function(){
-        /* initiate the plugin */
-        $("div.holder").jPages({
-            containerID  : "itemContainer",
-            perPage      : 5,
-            startPage    : 1,
-            startRange   : 1,
-            midRange     : 5,
-            endRange     : 1
-        });
-    });
-</script>
 </body>
 </html>

@@ -7,6 +7,7 @@
     <content url="file://$MODULE_DIR$/../../src/test" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="practica4.main" />
     <orderEntry type="library" name="Gradle: org.hibernate:hibernate-entitymanager:5.4.1.Final" level="project" />
     <orderEntry type="library" name="Gradle: org.hibernate:hibernate-core:5.4.1.Final" level="project" />
     <orderEntry type="library" name="Gradle: com.h2database:h2:1.4.197" level="project" />
