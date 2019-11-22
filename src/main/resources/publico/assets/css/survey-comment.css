@@ -1,0 +1,42 @@
+.survey-comments__list .survey-comment {
+  margin: 0;
+  border-bottom: 1px solid black;
+}
+
+.survey-comment > div {
+  height: auto;
+}
+
+.survey-comment__author-photo {
+  text-align: center;
+  padding: 10px 0;
+  position: relative;
+}
+
+.survey-comment__text {
+  padding: 10px;
+  font-size: 13px;
+}
+
+.survey-comment__author-photo img {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
+.survey-comment__text-content {
+  margin: 0;
+  padding-top: 5px;
+}
+
+.survey-comment__text-content p {
+  margin: 0;
+}
+
+.survey-comment__date-time {
+  padding-top: 5px;
+  color: #9c9c9c;
+  font-size: 11px;
+}
+

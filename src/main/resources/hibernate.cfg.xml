@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:h2:tcp://localhost/~/practica4</property>
+        <property name="connection.driver_class">org.h2.Driver</property>
+        <property name="connection.username">sa</property>
+        <property name="connection.password"></property>
+        <!-- SQL dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
+        <property name="show_sql">true</property>
+        <property name="hibernate.schema-generation.database.action">create-drop</property><!-- creates schema from entities each app deploy  -->
+
+        <mapping class="INF.ArticuloEntity"/>
+        <mapping class="INF.ComentarioEntity"/>
+        <mapping class="INF.EtiquetaEntity"/>
+        <mapping class="INF.LikeArticuloEntity"/>
+        <mapping class="INF.LikeComentarioEntity"/>
+        <mapping class="INF.UsuarioEntity"/>
+
+        <!-- <property name="connection.username"/> -->
+        <!-- <property name="connection.password"/> -->
+
+        <!-- DB schema will be updated if needed -->
+        <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
+    </session-factory>
+</hibernate-configuration>
