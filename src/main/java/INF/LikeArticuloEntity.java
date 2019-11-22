@@ -25,7 +25,7 @@ public class LikeArticuloEntity {
     }
 
     @Basic
-    @Column(name = "LIKE", nullable = true)
+    @Column(name = "ME_GUSTA", nullable = true)
     public Boolean getLike() {
         return like;
     }

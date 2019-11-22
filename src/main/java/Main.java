@@ -1,8 +1,5 @@
 
-import INF.ArticuloEntity;
-import INF.ComentarioEntity;
-import INF.EtiquetaEntity;
-import INF.UsuarioEntity;
+import INF.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Metamodel;
 import org.hibernate.query.Query;
@@ -179,9 +176,22 @@ public class Main {
             }
             long id = Integer.parseInt(request.queryParams("id_post"));
             ArticuloEntity articulo = sesion.find(ArticuloEntity.class, id);
+            /*
+            Query<LikeArticuloEntity> query = (Query<LikeArticuloEntity>) em.createQuery("from LikeArticuloEntity l where l.usuarioByIdUsuario.id=:scn and l.articuloByIdArticulo.id=:art", LikeArticuloEntity.class);
+            query.setParameter("scn", usuario.id);
+            query.setParameter("art", id);
+            */
+            Query cant = (Query) em.createQuery("select count(a) from LikeArticuloEntity a where a.like=true and a.articuloByIdArticulo.id=:art");
+            cant.setParameter("art", id);
+            Query cant2 = (Query) em.createQuery("select count(a) from LikeArticuloEntity a where a.dislike=true and a.articuloByIdArticulo.id=:art");
+            cant2.setParameter("art", id);
+            long likes = (long) cant.getSingleResult();
+            long dislikes = (long) cant2.getSingleResult();
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("usuario", usuario);
             attributes.put("post", articulo);
+            attributes.put("likes", likes);
+            attributes.put("dislikes", dislikes);
             return new ModelAndView(attributes, "post.ftl");
 
         } , new FreeMarkerEngine());
@@ -295,9 +305,45 @@ public class Main {
         }); //Crea un comentario en un articulo
 
         get("/likepost", (request, response) -> {
+            spark.Session session=request.session(true);
+            UsuarioEntity usuario = (UsuarioEntity)(session.attribute("usuario"));
             final Session sesion = getSession();
             long id = Integer.parseInt(request.queryParams("id_post"));
             ArticuloEntity articulo = sesion.find(ArticuloEntity.class, id);
+            em.getTransaction().begin();
+            if(articulo.likeArticulosById==null){
+                LikeArticuloEntity like = new LikeArticuloEntity();
+                like.like = true;
+                like.dislike = false;
+                like.articuloByIdArticulo = articulo;
+                like.usuarioByIdUsuario = usuario;
+                em.persist(like);
+                em.getTransaction().commit();
+            }
+            else {
+                Query<LikeArticuloEntity> query = (Query<LikeArticuloEntity>) em.createQuery("from LikeArticuloEntity l where l.usuarioByIdUsuario.id=:scn and l.articuloByIdArticulo.id=:art", LikeArticuloEntity.class);
+                query.setParameter("scn", usuario.id);
+                query.setParameter("art", id);
+                LikeArticuloEntity likeUser = query.uniqueResult();
+                if (likeUser==null){
+                    LikeArticuloEntity like = new LikeArticuloEntity();
+                    like.like = true;
+                    like.dislike = false;
+                    like.articuloByIdArticulo = articulo;
+                    like.usuarioByIdUsuario = usuario;
+                    em.persist(like);
+                    em.getTransaction().commit();
+                } else if (likeUser.like==true){
+                    likeUser.setLike(false);
+                    em.merge(likeUser);
+                    em.getTransaction().commit();
+                } else if (likeUser.like==false){
+                    likeUser.setLike(true);
+                    em.merge(likeUser);
+                    em.getTransaction().commit();
+                }
+            }
+
             //likePost(em, request, articulo);
             response.redirect("/post?id_post="+id);
             return "Me gusta";

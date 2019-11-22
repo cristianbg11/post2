@@ -73,16 +73,16 @@
                     <a href="/likepost?id_post=${post.id}"><button class="like">
                             <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
                         </button></a>
-                    <label class="text-justify"><#if post.me_gusta?has_content>
-                            ${post.me_gusta}
+                    <label class="text-justify"><#if likes?has_content>
+                            ${likes}
                         <#else>
                             0
                     </#if></label>
                     <a href="/dislikepost?id_post=${post.id}"><button class="dislike">
                             <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
                         </button></a>
-                    <label class="text-justify"><#if post.dislike?has_content>
-                            ${post.dislike}
+                    <label class="text-justify"><#if dislikes?has_content>
+                            ${dislikes}
                         <#else>
                             0
                         </#if></label>
