@@ -58,9 +58,9 @@ public class Main {
 
         if (secion.find(UsuarioEntity.class, num)==null){
             em.getTransaction().begin();
-            UsuarioEntity admin = new UsuarioEntity(1, "admin", "1234", true, true, "Cristian");
+            UsuarioEntity admin = new UsuarioEntity(num, "admin", "1234", true, true, "Cristian");
             em.persist(admin);
-            em.getTransaction().commit();;
+            em.getTransaction().commit();
         }
 
         post("/insertar", (request, response) -> {
@@ -203,15 +203,15 @@ public class Main {
 
             Query cantLikeComment = (Query) em.createQuery("select count(a) from LikeArticuloEntity a where a.like=true and a.articuloByIdArticulo.id=:art");
             cantLikeComment.setParameter("art", id);
-            articulo.comentariosById.forEach(comment->{
-                comment.likeComentariosById.forEach(meGusta ->{
-                    if (meGusta.like==true){
-                        comment.cantLikes++;
-                    } else if (meGusta.dislike==true){
-                        comment.cantDisLikes++;
+            for (int i=0; i<articulo.comentariosById.size(); i++){
+                for(int j=0; j<articulo.comentariosById.get(i).likeComentariosById.size(); j++){
+                    if (articulo.comentariosById.get(i).likeComentariosById.get(j).like==true){
+                        articulo.comentariosById.get(i).cantLikes++;
+                    } else if (articulo.comentariosById.get(i).likeComentariosById.get(j).dislike==true){
+                        articulo.comentariosById.get(i).cantDisLikes++;
                     }
-                });
-            });
+                }
+            }
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("usuario", usuario);
             attributes.put("post", articulo);

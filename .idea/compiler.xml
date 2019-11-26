@@ -8,6 +8,7 @@
       <module name="post2.practica4.test" target="1.8" />
       <module name="practica4.main" target="1.8" />
       <module name="practica4.test" target="1.8" />
+      <module name="Web.post2.practica4.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -18,7 +18,7 @@ public class UsuarioEntity {
     public Collection<LikeArticuloEntity> likeArticulosById;
     public Collection<LikeComentarioEntity> likeComentariosById;
 
-    public UsuarioEntity(int i, String admin, String s, boolean b, boolean b1, String cristian) {
+    public UsuarioEntity(long i, String admin, String s, boolean b, boolean b1, String cristian) {
     }
 
     public UsuarioEntity() {

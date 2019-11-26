@@ -3,6 +3,7 @@ package INF;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,7 +15,7 @@ public class ArticuloEntity {
     public long usuarioId;
     public Date fecha;
     public UsuarioEntity usuarioByUsuarioId;
-    public Collection<ComentarioEntity> comentariosById;
+    public List<ComentarioEntity> comentariosById;
     public Collection<EtiquetaEntity> etiquetasById;
     public Collection<LikeArticuloEntity> likeArticulosById;
 
@@ -86,11 +87,11 @@ public class ArticuloEntity {
     }
 
     @OneToMany(mappedBy = "articuloByArticuloId", cascade = CascadeType.ALL)
-    public Collection<ComentarioEntity> getComentariosById() {
+    public List<ComentarioEntity> getComentariosById() {
         return comentariosById;
     }
 
-    public void setComentariosById(Collection<ComentarioEntity> comentariosById) {
+    public void setComentariosById(List<ComentarioEntity> comentariosById) {
         this.comentariosById = comentariosById;
     }
 
