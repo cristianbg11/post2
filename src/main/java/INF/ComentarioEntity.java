@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "COMENTARIO", schema = "PUBLIC", catalog = "PRACTICA4")
+@Table(name = "COMENTARIO", schema = "PUBLIC", catalog = "PRACTICA4E")
 public class ComentarioEntity {
     public long id;
     public String comentario;

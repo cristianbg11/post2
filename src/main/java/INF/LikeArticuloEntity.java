@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "LIKE_ARTICULO", schema = "PUBLIC", catalog = "PRACTICA4")
+@Table(name = "LIKE_ARTICULO", schema = "PUBLIC", catalog = "PRACTICA4E")
 public class LikeArticuloEntity {
     public int id;
     public Boolean like;

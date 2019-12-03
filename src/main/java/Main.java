@@ -1,5 +1,6 @@
 
 import INF.*;
+import org.h2.tools.Server;
 import org.hibernate.HibernateException;
 import org.hibernate.Metamodel;
 import org.hibernate.query.Query;
@@ -9,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 import spark.ModelAndView;
 import spark.Request;
 import spark.template.freemarker.FreeMarkerEngine;
+import java.sql.Statement;
 
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
@@ -21,10 +23,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static spark.Spark.*;
 import static spark.Spark.get;
@@ -46,19 +50,28 @@ public class Main {
     public static Session getSession() throws HibernateException {
         return ourSessionFactory.openSession();
     }
-
     public static void main(final String[] args) throws Exception {
         //final Session session = getSession();
-        final Session secion = getSession();
+        Class.forName("org.h2.Driver");
         port(8080);
+        startDb();
+        final Session secion = getSession();
+
+
         staticFiles.location("/publico");
         EntityManager em = getSession();
 
-        long num = 1;
+        long num = 0;
 
         if (secion.find(UsuarioEntity.class, num)==null){
             em.getTransaction().begin();
-            UsuarioEntity admin = new UsuarioEntity(num, "admin", "1234", true, true, "Cristian");
+            //UsuarioEntity admin = new UsuarioEntity(num, "admin", "1234", true, true, "Cristian");
+            UsuarioEntity admin = new UsuarioEntity();
+            admin.username = "admin";
+            admin.password = "1234";
+            admin.administrador = true;
+            admin.autor = true;
+            admin.nombre = "Cristian";
             em.persist(admin);
             em.getTransaction().commit();
         }
@@ -264,6 +277,8 @@ public class Main {
             session.invalidate();
             response.removeCookie("CookieUsuario");
             response.redirect("/");
+            // stop the TCP Server
+            //server.stop();
             return "Sesion finalizada";
         }); //Finaliza Sesión
 
@@ -526,7 +541,16 @@ public class Main {
             em.getTransaction().commit();
         }
     }
-
+    public static void startDb() {
+        try {
+            Server.createTcpServer("-tcpPort",
+                    "8081",
+                    "-tcpAllowOthers",
+                    "-tcpDaemon").start();
+        }catch (SQLException ex){
+            System.out.println("Problema con la base de datos: "+ex.getMessage());
+        }
+    }
     private static String renderContent(String htmlFile) throws IOException, URISyntaxException {
         URL url = Main.class.getResource(htmlFile);
         Path path = Paths.get(url.toURI());

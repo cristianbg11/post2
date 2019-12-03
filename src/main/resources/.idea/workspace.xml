@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="59809292-3efa-4a90-a715-4c3d86324ee1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../../../.idea/modules/backup.post2.practica4.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../java/practica4.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/practica4.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../.idea/modules/Web.post2.practica4.test.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../.idea/modules/practica4.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../.idea/modules/practica4.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java/INF/ArticuloEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../java/INF/ArticuloEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java/INF/ComentarioEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../java/INF/ComentarioEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java/INF/EtiquetaEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../java/INF/EtiquetaEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java/INF/LikeArticuloEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../java/INF/LikeArticuloEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java/INF/LikeComentarioEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../java/INF/LikeComentarioEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java/INF/UsuarioEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../java/INF/UsuarioEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/hibernate.cfg.xml" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectId" id="1URTRDnRXM9HANxUpHr2ALaNgQH" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="59809292-3efa-4a90-a715-4c3d86324ee1" name="Default Changelist" comment="" />
+      <created>1575318398108</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1575318398108</updated>
+      <workItem from="1575318399972" duration="3000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>

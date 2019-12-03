@@ -9,7 +9,7 @@
     <orderEntry type="module" module-name="practica4.main" />
     <orderEntry type="library" name="Gradle: org.hibernate:hibernate-entitymanager:5.4.1.Final" level="project" />
     <orderEntry type="library" name="Gradle: org.hibernate:hibernate-core:5.4.1.Final" level="project" />
-    <orderEntry type="library" name="Gradle: com.h2database:h2:1.4.197" level="project" />
+    <orderEntry type="library" name="Gradle: com.h2database:h2:1.4.200" level="project" />
     <orderEntry type="library" name="Gradle: org.sql2o:sql2o:1.5.4" level="project" />
     <orderEntry type="library" name="Gradle: com.sparkjava:spark-template-freemarker:2.5.5" level="project" />
     <orderEntry type="library" name="Gradle: com.sparkjava:spark-template-thymeleaf:2.5.5" level="project" />

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "ARTICULO", schema = "PUBLIC", catalog = "PRACTICA4")
+@Table(name = "ARTICULO", schema = "PUBLIC", catalog = "PRACTICA4E")
 public class ArticuloEntity {
     public long id;
     public String titulo;

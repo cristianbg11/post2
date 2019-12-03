@@ -4,23 +4,26 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url">jdbc:h2:tcp://localhost/~/practica4</property>
+        <property name="connection.url">jdbc:h2:~/practica4E;AUTO_SERVER=TRUE</property>
         <property name="connection.driver_class">org.h2.Driver</property>
         <property name="connection.username">sa</property>
         <property name="connection.password"></property>
         <!-- SQL dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
         <property name="show_sql">true</property>
-        <property name="hibernate.schema-generation.database.action">create</property><!-- creates schema from entities if not exists  -->
-        <!-- <prop key="hibernate.hbm2ddl.auto">create</property> -->
-        <!-- <property name="hbm2ddl.auto">create</property> -->
+        <property name="hibernate.schema-generation.database.action">create</property> <!--creates schema from entities if not exists  -->
+        <!--<property name="hibernate.hbm2ddl.auto">create</property>-->
+        <!-- initialize db on startup -->
+        <!--<property name="javax.persistence.schema-generation.scripts.create-target">/practica4.sql</property>-->
+        <!--<property name="hibernate.hbm2ddl.import_files">/practica4.sql</property>-->
 
+        <mapping class="INF.UsuarioEntity"/>
         <mapping class="INF.ArticuloEntity"/>
         <mapping class="INF.ComentarioEntity"/>
         <mapping class="INF.EtiquetaEntity"/>
         <mapping class="INF.LikeArticuloEntity"/>
         <mapping class="INF.LikeComentarioEntity"/>
-        <mapping class="INF.UsuarioEntity"/>
+
 
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->

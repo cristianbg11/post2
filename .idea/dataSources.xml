@@ -23,5 +23,11 @@ C:/Web/post2/src/main/resources/hibernate.cfg.xml</remarks>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
       <jdbc-url>jdbc:h2:mem:practica4</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="jdbc:h2:tcp://localhost/~/practica4E" uuid="07d7d5b3-4047-490a-a135-e3af0c9422cc">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:tcp://localhost/~/practica4E</jdbc-url>
+    </data-source>
   </component>
 </project>

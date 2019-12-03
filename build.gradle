@@ -17,7 +17,7 @@ dependencies {
     compile 'org.hibernate:hibernate-entitymanager:5.4.1.Final'
     //Driver de conexión
     //compile 'com.h2database:h2:1.4.197'
-    compile group: 'com.h2database', name: 'h2', version: '1.4.197'
+    compile group: 'com.h2database', name: 'h2', version: '1.4.200'
     //compile files('libs/OJDBC8-Full')
     compile group: 'org.sql2o', name: 'sql2o', version: '1.5.4'
     //librearias para los sistemas de plantillas.
